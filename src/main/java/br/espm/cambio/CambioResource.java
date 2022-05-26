@@ -1,36 +1,54 @@
 package br.espm.cambio;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController //vai prover o serviço rest
+@RestController
 public class CambioResource {
 
-    private List<Moeda> moedas = new ArrayList<>();
+    @Autowired
+    private MoedaService moedaService;
 
-    @GetMapping("/hello")
-    public String helloWord(){
-        return "Hello ESPM";
-    }
+    // @GetMapping("/hello")
+    // public String helloWorld() {
+    //     return "Hello ESPM";
+    // }
 
     @GetMapping("/moeda")
-    public List<Moeda> listMoeda(){
-        
-        //moedas.add(new Moeda("Real", "BRL"));
-        //moedas.add(new Moeda("Rubro", "RUB"));
-        //moedas.add(new Moeda("Dolar", "USD"));
-        //moedas.add(new Moeda("Euro", "EUR"));
-
-        return moedas;
+    public List<Moeda> listMoeda() {
+        return moedaService.listaAll();
     }
-    @PostMapping("/moeda")
-    public void save(@RequestBody Moeda moeda){
-        moedas.add(moeda);
 
+    @GetMapping("/moeda/{simbolo:[A-Z]{3,}}")
+    public Moeda findMoedaBySimbolo(@PathVariable String simbolo) {
+        return moedaService.findBySimbolo(simbolo);
+    }
+
+    @GetMapping("/moeda/{id:[a-f0-9]{8}(?:-[a-f0-9]{4}){4}[a-f0-9]{8}}")
+    public Moeda findMoedaById(@PathVariable String id) {
+        UUID uuid = UUID.fromString(id);
+        return moedaService.findBy(uuid);
+    }
+
+    @PostMapping("/moeda")
+    public void save(@RequestBody Moeda moeda) {
+        moedaService.create(moeda);
+    }
+    
+    @DeleteMapping("/moeda/{id:[a-f0-9]{8}(?:-[a-f0-9]{4}){4}[a-f0-9]{8}}")
+    public void deletarmoeda(@PathVariable String id) {
+        MoedaService.delete(id);
     }
 }

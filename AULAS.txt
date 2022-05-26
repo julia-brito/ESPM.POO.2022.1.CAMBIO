@@ -1,0 +1,761 @@
+AULAS HUMBERTO
+
+- pasta espm/poo -> tudo dentro dessa pasta
+ 
+AULA 02
+	MAIN
+package src.espm.poo.aula02;
+
+public class Main {
+
+    public static void main(String[] args){
+        Pessoa p1 = new Pessoa(); //variável do tipo inteira que aponta p/ um objeto
+        p1.Nome = "Humberto";
+        p1.idade = 15;
+        p1.salario = 800.12;
+
+        Pessoa p2 = new Pessoa();
+        p2.Nome = "Sandra";
+        p2.idade = 22;
+        p2.salario = 45000;
+
+        Pessoa p3 = p1; 
+        System.out.println(p3.Nome);
+        p3.Nome = "Selmini";
+        System.out.println(p1.Nome);
+
+        p1.imprimir(); // nome . método
+        p2.imprimir();
+        p3.imprimir();
+
+    }
+    
+}
+	PESSOA
+
+package src.espm.poo.aula02;
+
+public class Pessoa {
+    String Nome;
+    int idade;
+    double salario;
+
+    public void imprimir(){
+        System.out.println("Nome: " + Nome);
+        System.out.println("Idade: " + idade);
+        System.out.println("Salário: " + salario);
+        
+    }
+
+   
+}
+	SALA
+package src.espm.poo.aula02;
+
+public class Sala {
+    String nome;
+    
+    
+}
+
+AULA 03
+
+	MAIN
+package src.espm.poo.aula03;
+
+import javax.swing.event.SwingPropertyChangeSupport;
+
+import src.espm.poo.aula02.Pessoa;
+
+public class Main {
+    public static void main(String[] args){
+        int N = 1000000;
+        long t = System.currentTimeMillis();
+        Pessoa[] ps = new Pessoa[N];
+        for (int i = 0; i < N; i++){
+            ps[i] = new Pessoa(i+"berto");
+        }
+        long a = System.currentTimeMillis();
+        System.out.println("d1: "+ (a - t));
+        System.out.println(Runtime.getRuntime().freeMemory()/1024/1024);
+
+        System.gc();
+        t = System.currentTimeMillis();
+        System.out.println("d2: "+ (t - a));
+
+        System.out.println(Runtime.getRuntime().freeMemory()/1024/1024);
+    }
+    
+}
+
+AULA 04
+
+	ALUNO
+package espm.poo.aula04;
+
+import java.util.Arrays;
+
+public class Aluno {
+    
+    // long, int, são primitivos, não podem ser nulos
+    Integer ra = null;
+    String nome = null;
+
+    public Aluno(Integer ra, String nome){
+        this.ra = ra;
+        this.nome = nome;
+    }
+    public double media(Double... notas){
+        double soma = 0;
+        for (double n: notas){
+            soma += n;
+        }
+        double media = soma / notas.length;
+        return media;
+       
+    }
+
+   //métodos estáticos pertencem à classe & não estáticos pertencem ao objeto
+   @Override
+   public String toString(){
+        return "{ra:" + ra + ", nome: " + nome + "}";
+    }
+    @Override
+    public boolean equals(Object obj){
+        return obj != null
+        && obj instanceof Aluno
+        && ra.equals(((Aluno)obj).ra);
+    }
+    @Override
+    public int hashCode(){
+        return ra.hashCode();
+    }
+}
+	MAIN
+package espm.poo.aula04;
+
+public class Main {
+    public static void main(String[] args){
+        // na industria, para delcarar um númeor que não é N inteiro (usando long) teria que colocar 10l "L" minusculo
+        Aluno a1 = new Aluno(10,"hert");
+        System.out.println(a1);
+        Aluno a2 = new Aluno(89,"kyp");
+        System.out.println(a2); //to.string só funciona com objeto
+
+        if(a1.equals(a2)){
+            System.out.println("São iguais");    
+        }else{
+            System.out.println("Não são iguais");
+        }
+    }
+    
+}
+
+	MAIN ARRAYS
+package espm.poo.aula04;
+
+import java.util.Arrays;
+
+public class MainArrays {
+
+    public static void main(String[] args){
+        int [] ns = new int [10];
+
+        for (int n : ns){
+            System.out.println(n);
+        }
+
+        Arrays.asList(ns).forEach(n -> System.out.println(n));
+
+        int [][] matriz = new int [][]{
+            {4, 0, 1},
+            {2, 7, 5},
+        };
+        for (int [] l:matriz){
+            for (int c: l){
+                System.out.println(c);
+            }
+        }
+       
+    }
+    
+}
+
+	MAIN COLLECTION
+package espm.poo.aula04;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class MainCollection {
+    public static void main(String[] args){
+        Set<Integer> sinteiros = new TreeSet<Integer>();
+        sinteiros.add(3);
+        sinteiros.add(2);
+        sinteiros.add(1);
+        sinteiros.add(1);
+        System.out.println(Arrays.toString(Arrays.asList(sinteiros).toArray()));
+
+        List<Integer> linteiros = new ArrayList<>();
+        linteiros.add(3);
+        linteiros.add(2);
+        linteiros.add(1);
+        linteiros.add(1);
+        System.out.println(Arrays.toString(Arrays.asList(linteiros).toArray()));
+
+        Set<Aluno> salunos = new HashSet<>();
+        salunos.add(new Aluno(10, "Dezmini"));
+        salunos.add(new Aluno(37, "Doismini"));
+        salunos.add(new Aluno(98, null));
+        System.out.println(Arrays.toString(Arrays.asList(salunos).toArray()));
+
+        List<Aluno> lalunos = new ArrayList<>();
+        lalunos.add(new Aluno(10, "Dezmini"));
+        lalunos.add(new Aluno(2, "Doismini"));
+        lalunos.add(new Aluno(10, null));
+        System.out.println(Arrays.toString(Arrays.asList(lalunos).toArray()));
+
+        Map<Integer, Aluno> mapa = new HashMap<>();
+        mapa.put(10, new Aluno(10, "dezmini"));
+        mapa.put(2, new Aluno(2, "doismini"));
+        
+        
+    }
+    
+}
+AULA 06 
+	CLIENTE
+package espm.poo.aula06;
+
+public class clientePJ {
+    
+}
+	MAIN
+package espm.poo.aula06;
+
+public class main {
+    public static void main(String[] args){
+        //aula de herança
+        
+    }
+}
+AULA 08
+	CLIENTE
+package espm.poo.aula08;
+
+public class Cliente implements Usuario {
+
+    private String nome;
+
+    public Cliente(String nome){
+        this.nome = nome;
+    }
+
+    @Override
+    public String getUsername() {
+        return "cli." + nome.toLowerCase();
+    }
+
+    @Override
+    public boolean autenticar(String password) {
+        return(
+        "" + nome.charAt(0) + nome.charAt(nome.length() - 1)
+        ).equals(password);
+    }
+
+    
+
+    
+
+
+    
+}
+	DIRETOR
+package espm.poo.aula08;
+
+public class Diretor extends Funcionario implements Usuario{
+
+    public Diretor(int id){
+        super(id);
+    }
+
+    @Override
+    public String getUsername(){
+        return "dir." + super.getId();
+    }
+
+    @Override
+    public boolean autenticar(String password) {
+        String p = "";
+        int n = getId();
+        while (n > 0){
+           int s = n % 10;
+           n = (n - s) / 10;
+           p += s;
+        }
+        return p.equals(password);
+    }
+    
+}
+	FUNCIONARIO
+package espm.poo.aula08;
+
+public class Funcionario {
+
+    private int id;
+
+    public Funcionario(int id){
+        this.id = id;
+    }
+    public int getId() {
+        return id;
+    }
+    
+    
+    
+}
+	MAIN
+package espm.poo.aula08;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    public static void main(String[] args){
+
+        List<Pagamento> pagamentos = new ArrayList<>();
+
+        PagamentoCartao pag1 = new PagamentoCartao(400, 20);
+        PagamentoDolar pag2 = new PagamentoDolar(400, 5.8, 10);
+
+        pagamentos.add(pag1);
+        pagamentos.add(pag2);
+
+        pagamentos.forEach(p -> {
+            System.out.println(p.efetivar());
+        });
+
+
+    }
+}
+	MAIN AUTH
+package espm.poo.aula08;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainAuth {
+public static void main(String[] args) {
+    
+    Cliente nereu = new Cliente("Nereu");
+    Funcionario func1 = new Diretor(10);
+    Diretor dir = new Diretor(20);
+
+    Usuario usu1 = new Cliente("Rodrigo");
+
+    List<Usuario> l = new ArrayList<>();
+    l.add(nereu);
+    l.add(dir);
+    l.add((Usuario) func1);
+    l.add(usu1);
+
+    for (Usuario u: l){
+        System.out.println(u.getUsername());
+        
+    }
+}
+}
+
+	PAGAMENTO
+package espm.poo.aula08;
+
+public abstract class Pagamento {
+
+    private final double valor;
+
+    public Pagamento(double valor){
+        this.valor = valor;
+    }
+
+    public double efetivar(){
+    double valorTotal = this.calcularTotal();
+    return valorTotal;
+    }
+
+    protected abstract double calcularTotal();
+
+    public double getValor(){
+        return valor;
+    }
+
+    
+}
+	PAGAMENTO CARTAO
+package espm.poo.aula08;
+
+public class PagamentoCartao extends Pagamento{
+
+    private double comissao;
+
+    public PagamentoCartao(double valor, double comissao){
+        super(valor);
+        this.comissao = comissao;
+    }
+    
+    @Override
+    protected double calcularTotal(){
+        return super.getValor() + comissao;
+    }
+}
+
+	PAGAMENTO DOLAR
+package espm.poo.aula08;
+
+public class PagamentoDolar extends Pagamento {
+
+    private final double cambio;
+    private final double taxa;
+
+    public PagamentoDolar(double valor, double cambio, double taxa){
+        super(valor);
+        this.cambio = cambio;
+        this.taxa = taxa;
+        
+    }
+
+    @Override
+    protected double calcularTotal(){
+        return super.getValor() * cambio + taxa;
+
+    }
+}
+	USUARIO
+package espm.poo.aula08;
+
+public interface Usuario {
+
+    public String getUsername();
+    public boolean autenticar(String password);
+    
+}
+
+EX2
+	BANCO
+package espm.poo.ex2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Banco {
+
+    private String nome;
+
+    private List<Cliente> clientes;
+    private List<Conta> contas;
+
+    public Banco(String nome){
+        this.nome = nome;
+        this.clientes = new ArrayList<>();
+        this.setContas(new ArrayList<>());
+    }
+
+    public List<Conta> getContas(){
+        return contas;
+    }
+
+    public void setContas(List<Conta> contas){
+        this.contas = contas;
+    }
+    public void addCliente(Cliente c){
+        this.clientes.add(c);
+        this.contas.add(c.getConta());
+    }
+    public String getNome(){
+        return nome;
+    }
+    public List<Cliente> getClientes(){
+        return clientes;
+    }
+    
+}
+	CLIENTE
+package espm.poo.ex2;
+
+public class Cliente {
+
+    private String nome;
+    private String sobrenome;
+    private Conta conta;
+
+    public Cliente(){
+        conta = new Conta(this);
+    }
+
+    public void setNome(String nome){
+        String[] nomes = nome.split(" ");
+        this.nome = nomes[0];
+    }
+    public void setSobrenome(String sobrenome){
+        this.sobrenome = sobrenome;
+    }
+    public String getNome(){
+        return nome;
+    }
+    public String getSobrenome(){
+        return sobrenome;
+    }
+    public Conta getConta(){
+        return conta;
+    }
+}
+	CONTA
+package espm.poo.ex2;
+
+public class Conta {
+    private int id;
+    private Cliente  cliente;
+    private double saldo;
+
+    public Conta(Cliente cliente){ //é um métoco construtor então a a letra é mais maiuscúla -> Conta
+       this.cliente = cliente;
+    }
+
+    public double getSaldo(){
+        return this.saldo;
+        //this.saldo = this.saldo - valor; //não precisa do this mas é bom colocar
+    }
+    public void sacar(double valor){
+        if (this.saldo >= valor){
+            this.saldo = saldo - valor;
+        }else{
+            System.out.println("Saldo Insuficiente");
+        }
+        //this.saldo = this.saldo + valor; //não precisa do this mas é bom colocar
+    }
+    public void depositar(double valor){
+        if (valor > 0){
+            this.saldo = this.saldo + valor;
+        }
+    }
+    public Cliente getCliente(){
+        return cliente;
+    }
+    
+}
+	EXEMPLO
+package espm.poo.ex2;
+
+public class exemplo {
+    public static void main(String[] args){
+        
+        PessoaJuridica pj1 = new PessoaJuridica();
+        Cliente pj2 = new PessoaJuridica();
+        
+        Banco ehBank = new Banco("EhBank");
+
+        ehBank.addCliente(pj1);
+        ehBank.addCliente(pj2);
+
+        pj1.setNome("Humberto");
+        pj1.setCnpj("12");
+
+        pj2.setNome("nome_pessoa");
+
+        System.out.println("\n" + pj1.toString());
+        System.out.println(pj2.toString());
+
+        
+    }
+    
+}
+	MAIN
+package espm.poo.ex2;
+
+import java.util.Scanner;
+
+public class main {
+
+    public static Banco banco = null;
+    public static void main(String[] args) {
+
+        banco = new Banco("ESPM Bank");
+
+
+        Scanner scan = new Scanner(System.in);
+        boolean exit = false;
+        while(!exit){
+        try{
+            System.out.print("ESPM> ");
+            String input = scan.nextLine().trim().toLowerCase();
+
+            if ("exit".equals(input)){
+            }else if("exit".equals(input)){
+                exit = true;
+            }else if("help".equals(input)){
+                help();
+            }else if ("list".equals(input)){
+                listCostumers(banco);
+            }else if("add".equals(input)){
+                addCustumer(banco);
+            }else if("del".equals(input)){
+                throw new UnsupportedOperationException();
+            }else if ("find".equals(input)){
+                throw new UnsupportedOperationException();
+            }else{
+                System.err.println("Comando Inválido");
+            }
+        }
+            catch (UnsupportedOperationException e){
+                e.printStackTrace();
+            }
+        }
+       System.out.println("Bye bye!");
+    }
+
+    private static void help(){
+        System.out.println("ESPM Sistema de Clientes");
+        System.out.println("---------------------");
+        System.out.println("add -> Cadastro Cliente");
+        System.out.println("list -> Lista Clientes");
+        System.out.println("del -> Apaga Cliente");
+        System.out.println("find -> Localiza Cliente");
+        System.out.println();
+        System.out.println("exit -> Sair do Sistema");
+    }
+    private static void listCostumers(Banco banco){
+        //banco.getClientes().forEach(c -> System.out.println(c))
+        banco.getClientes().forEach(c ->{
+            if(c instanceof PessoaFisica){
+                PessoaFisica pf = (PessoaFisica) (c);
+                System.out.println(pf);
+            }
+        });
+        
+    }
+    private static void addCustumer(Banco banco){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Nome: ");
+        String nome = scan.nextLine();
+
+        TipoPessoa tipoPessoa = inputTipoCliente();
+
+        //System.out.println("Tipo do cliente? [F|J]");
+        //String tipoPessoa = scan.nextLine();
+
+       Cliente c = null;
+
+       switch(tipoPessoa){
+           case Fisica:
+            System.out.println("Pessoa Física");
+            System.out.println("CPF: ");
+             String cpf = scan.nextLine();
+
+            PessoaFisica pf = new PessoaFisica();
+            pf.setCpf(cpf);
+           c = pf;
+
+           break;
+
+           case Juridica:
+           System.out.println("Pessoa Júridica");
+            System.out.println("CNPJ: ");
+             String cnpj = scan.nextLine();
+
+            PessoaJuridica pj = new PessoaJuridica();
+            pj.setCnpj(cnpj);
+           c = pj;
+
+           break;
+       }
+       //if ("f" equals(tipoPessoa)){
+
+       // System.out.println("CPF: ");
+        //String cpf = scan.nextLine();
+
+        //PessoaFisica pf = new PessoaFisica();
+        //pf.setCpf(cpf);
+        //c = pf;
+
+       //}else{
+          // System.out.println("CNPJ: ");
+           //String cnpj = scan.nextLine();
+
+           //PessoaJuridica pj = new PessoaJuridica();
+            //pj.setCnpj(cnpj);
+            //c = pj;
+       //}
+       //c.setNome(nome);
+       //banco.addCliente(c);
+        c.setNome(nome);
+        banco.addCliente(c);
+    }
+
+
+private static TipoPessoa inputTipoCliente(){
+    Scanner scan = new Scanner(System.in);
+    String tp = "";
+    while (!tp.equals("j") && !tp.equals("f")){
+        System.out.println("Tipo Cliente? [F|J]");
+        tp = scan.nextLine().toLowerCase();
+        if (!tp.equals("j") && !tp.equals("f")){
+            System.err.println("F: Física | J: Juridica");
+         }
+      }
+
+     return tp.equals("f") ? TipoPessoa.Fisica : TipoPessoa.Juridica;
+    }
+}
+	PESSOA FISICA
+package espm.poo.ex2;
+
+public class PessoaFisica extends Cliente{
+    private String cpf;
+
+    public void setCpf(String cpf){
+        this.cpf = cpf;
+    }
+    public String getCpf(){
+        return cpf;
+    }
+    @Override
+    public String toString(){
+        return "{nome: " + getNome() +
+         "cpf:" + 
+         "conta: "+ getConta() + "}";
+    }
+}
+	PESSOA JURIDICA
+package espm.poo.ex2;
+
+public class PessoaJuridica extends Cliente{ //especializando ou generalizando a classe
+    private String cnpj;
+
+    public String getCnpj(){
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj){
+        this.cnpj = cnpj;
+    }
+    @Override
+    public String toString(){
+        return "{nome: " + getNome() + ", cnpj:" + getCnpj() + "conta: " + getConta() + "}";
+    }
+
+    
+}
+	TIPO PESSOA
+package espm.poo.ex2;
+
+public enum TipoPessoa { //classe enum é para algo pré-definido
+
+    Fisica, Juridica;
+    
+}
